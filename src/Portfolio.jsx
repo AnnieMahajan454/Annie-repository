@@ -452,7 +452,13 @@ export default function Portfolio() {
           Featured Projects
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-purple-900" : "bg-gradient-to-br from-white to-purple-50"} shadow-xl border ${darkMode ? "border-purple-800" : "border-purple-200"} transform hover:scale-105 hover:-rotate-1 transition-all duration-500`}>
+          {/* Smart Construction Planner */}
+          <motion.div 
+            className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-purple-900" : "bg-gradient-to-br from-white to-purple-50"} shadow-xl border ${darkMode ? "border-purple-800" : "border-purple-200"} transform hover:scale-105 hover:-rotate-1 transition-all duration-500 cursor-pointer`}
+            onClick={() => window.open('https://github.com/AnnieMahajan454/Smart-Construction-Planner', '_blank')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
               <Zap className="w-8 h-8 text-purple-500" />
             </div>
@@ -461,17 +467,29 @@ export default function Portfolio() {
                 <Target className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-3 text-purple-700 dark:text-purple-300">Smart Construction Planner</h3>
-              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>AI-driven tool optimizing construction using pedestrian flow and geospatial data.</p>
+              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>AI-driven tool optimizing construction using pedestrian flow and geospatial data for intelligent urban planning.</p>
             </div>
             <div className="flex items-center justify-between">
               <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
                 AI/ML
               </span>
-              <ExternalLink className="w-5 h-5 text-purple-500 group-hover:text-purple-700 transition-colors" />
+              <div className="flex items-center gap-2">
+                <Github className="w-4 h-4 text-purple-500 group-hover:text-purple-700 transition-colors" />
+                <ExternalLink className="w-5 h-5 text-purple-500 group-hover:text-purple-700 transition-colors" />
+              </div>
             </div>
-          </div>
+            <div className="mt-4 text-sm text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
+              Click to view on GitHub →
+            </div>
+          </motion.div>
           
-          <div className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-green-900" : "bg-gradient-to-br from-white to-green-50"} shadow-xl border ${darkMode ? "border-green-800" : "border-green-200"} transform hover:scale-105 hover:rotate-1 transition-all duration-500`}>
+          {/* Project Management System */}
+          <motion.div 
+            className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-green-900" : "bg-gradient-to-br from-white to-green-50"} shadow-xl border ${darkMode ? "border-green-800" : "border-green-200"} transform hover:scale-105 hover:rotate-1 transition-all duration-500 cursor-pointer`}
+            onClick={() => window.open('https://github.com/AnnieMahajan454/Project-Management-System', '_blank')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
               <Globe className="w-8 h-8 text-green-500" />
             </div>
@@ -480,34 +498,52 @@ export default function Portfolio() {
                 <Briefcase className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-3 text-green-700 dark:text-green-300">Project Management System</h3>
-              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>Full-stack website with authentication, real-time updates, and collaboration tools.</p>
+              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>Full-stack MERN application with authentication, real-time updates, and collaboration tools for team management.</p>
             </div>
             <div className="flex items-center justify-between">
               <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
-                MERN
+                MERN Stack
               </span>
-              <ExternalLink className="w-5 h-5 text-green-500 group-hover:text-green-700 transition-colors" />
+              <div className="flex items-center gap-2">
+                <Github className="w-4 h-4 text-green-500 group-hover:text-green-700 transition-colors" />
+                <ExternalLink className="w-5 h-5 text-green-500 group-hover:text-green-700 transition-colors" />
+              </div>
             </div>
-          </div>
+            <div className="mt-4 text-sm text-green-400 opacity-0 group-hover:opacity-100 transition-opacity">
+              Click to view on GitHub →
+            </div>
+          </motion.div>
           
-          <div className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-orange-900" : "bg-gradient-to-br from-white to-orange-50"} shadow-xl border ${darkMode ? "border-orange-800" : "border-orange-200"} transform hover:scale-105 hover:-rotate-1 transition-all duration-500`}>
+          {/* Financial Portfolio Tracker */}
+          <motion.div 
+            className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-blue-900" : "bg-gradient-to-br from-white to-blue-50"} shadow-xl border ${darkMode ? "border-blue-800" : "border-blue-200"} transform hover:scale-105 hover:-rotate-1 transition-all duration-500 cursor-pointer`}
+            onClick={() => window.open('https://github.com/AnnieMahajan454/Financial-Portfolio-Tracker', '_blank')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
-              <Rocket className="w-8 h-8 text-orange-500" />
+              <TrendingUp className="w-8 h-8 text-blue-500" />
             </div>
             <div className="mb-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mb-4">
                 <Target className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-orange-700 dark:text-orange-300">Campus Navigation Robot</h3>
-              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>ROS-based robot with mapping, obstacle avoidance, and location tracking.</p>
+              <h3 className="text-2xl font-bold mb-3 text-blue-700 dark:text-blue-300">Financial Portfolio Tracker</h3>
+              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>Advanced financial tracking application with real-time market data, portfolio analytics, and investment insights.</p>
             </div>
             <div className="flex items-center justify-between">
-              <span className="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full text-sm font-medium">
-                Robotics
+              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+                FinTech
               </span>
-              <ExternalLink className="w-5 h-5 text-orange-500 group-hover:text-orange-700 transition-colors" />
+              <div className="flex items-center gap-2">
+                <Github className="w-4 h-4 text-blue-500 group-hover:text-blue-700 transition-colors" />
+                <ExternalLink className="w-5 h-5 text-blue-500 group-hover:text-blue-700 transition-colors" />
+              </div>
             </div>
-          </div>
+            <div className="mt-4 text-sm text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+              Click to view on GitHub →
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -924,7 +960,7 @@ export default function Portfolio() {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full animate-pulse opacity-20"></div>
                 <div className="absolute inset-4 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
                   <div className="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <Heart className="w-16 h-16 text-white animate-pulse" />
+                    <MessageSquare className="w-16 h-16 text-white animate-pulse" />
                   </div>
                 </div>
               </div>
