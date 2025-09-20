@@ -37,26 +37,6 @@ export default function Portfolio() {
     { name: 'ROS', level: 75, category: 'Robotics' },
   ];
 
-  const testimonials = [
-    {
-      name: "Dr. Sarah Chen",
-      role: "Professor, VIT Chennai",
-      content: "Annie consistently demonstrates exceptional technical skills and leadership qualities. Her work on AI-driven projects shows remarkable innovation.",
-      avatar: "SC"
-    },
-    {
-      name: "Rajesh Kumar",
-      role: "Senior Developer, Tech Corp",
-      content: "Working with Annie on the project management system was impressive. Her full-stack expertise and attention to detail are outstanding.",
-      avatar: "RK"
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Event Coordinator, VIT",
-      content: "Annie's organizational skills and technical expertise made her an invaluable team member during major college events.",
-      avatar: "ER"
-    }
-  ];
 
   const FloatingIcons = () => (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
@@ -223,6 +203,8 @@ export default function Portfolio() {
                 'Computer Science Student',
                 2000,
                 'Problem Solver',
+                2000,
+                'Data Analyst',
                 2000,
               ]}
               wrapper="span"
@@ -486,7 +468,7 @@ export default function Portfolio() {
           {/* Project Management System */}
           <motion.div 
             className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-green-900" : "bg-gradient-to-br from-white to-green-50"} shadow-xl border ${darkMode ? "border-green-800" : "border-green-200"} transform hover:scale-105 hover:rotate-1 transition-all duration-500 cursor-pointer`}
-            onClick={() => window.open('https://github.com/AnnieMahajan454/Project-Management-System', '_blank')}
+            onClick={() => window.open('https://github.com/AnnieMahajan454/MERN-Full-Stack', '_blank')}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -860,17 +842,6 @@ export default function Portfolio() {
                 <h3 className="text-xl font-bold text-green-700 dark:text-green-300 mb-2">Full Stack Web Development</h3>
                 <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} mb-1`}>Ethnus</p>
                 <span className="text-sm text-green-600 dark:text-green-400 font-medium">2025</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className={`rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-orange-900" : "bg-gradient-to-br from-white to-orange-50"} shadow-xl border ${darkMode ? "border-orange-800" : "border-orange-200"} transform hover:scale-105 transition-all duration-300`}>
-            <div className="flex items-start gap-4">
-              <Award className="w-8 h-8 text-orange-500 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="text-xl font-bold text-orange-700 dark:text-orange-300 mb-2">AWS Certified Cloud Practitioner</h3>
-                <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} mb-1`}>Amazon Web Services</p>
-                <span className="text-sm text-orange-600 dark:text-orange-400 font-medium">2025</span>
               </div>
             </div>
           </div>
