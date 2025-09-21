@@ -1,8 +1,6 @@
-import { Card, CardContent } from "./components/ui/card";
-import { Button } from "./components/ui/button";
 import { Github, Linkedin, Mail, Code, Home, Book, Briefcase, Award, User, Phone, MapPin, Send, ExternalLink, Star, Sparkles, Zap, Rocket, Target, Globe, Download, ArrowRight, CheckCircle, TrendingUp, Users, MessageSquare, Calendar, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { TypeAnimation } from "react-type-animation";
 
