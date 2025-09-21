@@ -35,7 +35,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 
-// Portfolio with animations and updated certifications - v2.1
+// Portfolio with animations and updated certifications - v2.2 - Netlify deployment trigger
 export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
