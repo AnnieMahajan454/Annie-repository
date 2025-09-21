@@ -776,57 +776,6 @@ export default function Portfolio() {
         </div>
       </section>
       
-      {/* Testimonials Section */}
-      <section id="testimonials" className="relative py-20 px-6 md:px-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold mb-16 text-center bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            What Others Say
-          </motion.h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                className="bg-slate-800/60 rounded-2xl p-8 border border-slate-600/30 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105"
-              >
-                <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                    {testimonial.avatar}
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold text-slate-200">{testimonial.name}</h4>
-                    <p className="text-sm text-slate-400">{testimonial.role}</p>
-                  </div>
-                </div>
-                
-                <div className="mb-4">
-                  <div className="flex text-yellow-400 mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-slate-300 italic leading-relaxed">
-                    "{testimonial.content}"
-                  </p>
-                </div>
-                
-                <div className="flex items-center text-blue-400">
-                  <Users className="w-4 h-4 mr-2" />
-                  <span className="text-sm">Verified Review</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Certificates */}
       <section id="certificates" className="p-16 max-w-6xl mx-auto">
