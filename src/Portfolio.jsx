@@ -39,6 +39,27 @@ export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
+  // Generate random positions for background elements
+  const backgroundStars = Array.from({ length: 30 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 1.5 + 0.5,
+    opacity: Math.random() * 0.15 + 0.05,
+    duration: Math.random() * 25 + 15,
+    delay: Math.random() * 25
+  }));
+
+  const floatingParticles = Array.from({ length: 12 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 3 + 1,
+    opacity: Math.random() * 0.08 + 0.02,
+    duration: Math.random() * 30 + 20,
+    delay: Math.random() * 20
+  }));
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -50,8 +71,64 @@ export default function Portfolio() {
 
   return (
     <div className="bg-slate-900 text-slate-100 font-sans relative overflow-x-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Moving Stars */}
+        {backgroundStars.map((star) => (
+          <div
+            key={`star-${star.id}`}
+            className="absolute w-1 h-1 bg-blue-400 rounded-full animate-pulse"
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              opacity: star.opacity,
+              animationDuration: `${star.duration}s`,
+              animationDelay: `${star.delay}s`,
+              transform: `scale(${star.size})`,
+            }}
+          >
+            <div 
+              className="w-full h-full bg-blue-400 rounded-full"
+              style={{
+                animation: `twinkle ${star.duration}s ease-in-out infinite ${star.delay}s`
+              }}
+            />
+          </div>
+        ))}
+        
+        {/* Floating Particles */}
+        {floatingParticles.map((particle) => (
+          <div
+            key={`particle-${particle.id}`}
+            className="absolute rounded-full bg-gradient-to-r from-blue-400/10 to-indigo-400/10"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              opacity: particle.opacity,
+              animation: `float ${particle.duration}s ease-in-out infinite ${particle.delay}s`
+            }}
+          />
+        ))}
+        
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.008]">
+          <div className="w-full h-full" style={{
+            backgroundImage: `
+              linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px'
+          }} />
+        </div>
+        
+        {/* Gradient Overlays */}
+        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-slate-900/80 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-slate-900/80 to-transparent" />
+      </div>
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50">
+      <nav className="fixed top-0 left-0 w-full z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50 relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="flex justify-between items-center py-4">
             {/* Logo */}
@@ -273,6 +350,7 @@ export default function Portfolio() {
                 {[
                   { label: "AI/ML Specialist", color: "blue" },
                   { label: "Full-Stack Developer", color: "green" },
+                  { label: "Data Analyst", color: "cyan" },
                   { label: "Problem Solver", color: "purple" },
                   { label: "Team Leader", color: "orange" }
                 ].map((tag) => (
@@ -281,6 +359,7 @@ export default function Portfolio() {
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 cursor-default
                       ${tag.color === 'blue' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
                         tag.color === 'green' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
+                        tag.color === 'cyan' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' :
                         tag.color === 'purple' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' :
                         'bg-orange-500/20 text-orange-300 border border-orange-500/30'}
                     `}
@@ -297,49 +376,62 @@ export default function Portfolio() {
                 <div className="w-80 h-80 bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-8 shadow-2xl border border-slate-600/30">
                   <div className="text-center space-y-6">
                     {/* Profile Image */}
-                    <div className="w-32 h-32 mx-auto mb-6 relative">
-                      <img 
-                        src="/annie-photo.jpg" 
-                        alt="Annie Mahajan" 
-                        className="w-full h-full object-cover rounded-2xl border-4 border-slate-600/30 shadow-xl"
-                      />
+                    <div className="w-32 h-32 mx-auto mb-6 relative group">
+                      <div className="w-full h-full rounded-2xl border-4 border-slate-600/30 shadow-xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-indigo-600/20">
+                        <img 
+                          src="/annie-photo.jpg" 
+                          alt="Annie Mahajan"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-indigo-600/20 flex items-center justify-center" style={{display: 'none'}}>
+                          <div className="text-center">
+                            <User className="w-16 h-16 text-blue-400 mb-2 group-hover:scale-110 transition-transform duration-300" />
+                            <div className="text-xs text-slate-400 font-medium">Annie</div>
+                            <div className="text-xs text-slate-500">Mahajan</div>
+                          </div>
+                        </div>
+                      </div>
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-slate-800 flex items-center justify-center">
                         <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
                       </div>
                     </div>
                     
                     {/* Stats */}
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-300 flex items-center gap-2">
+                        <span className="text-slate-300 flex items-center gap-2 text-sm">
                           <Code className="w-4 h-4" />
                           Projects Completed
                         </span>
-                        <span className="text-blue-400 font-bold text-lg">15+</span>
+                        <span className="text-blue-400 font-bold text-base">15+</span>
                       </div>
                       
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-300 flex items-center gap-2">
+                        <span className="text-slate-300 flex items-center gap-2 text-sm">
                           <Calendar className="w-4 h-4" />
                           Events Managed
                         </span>
-                        <span className="text-green-400 font-bold text-lg">300+</span>
+                        <span className="text-green-400 font-bold text-base">300+</span>
                       </div>
                       
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-300 flex items-center gap-2">
+                        <span className="text-slate-300 flex items-center gap-2 text-sm">
                           <Target className="w-4 h-4" />
                           Technologies
                         </span>
-                        <span className="text-purple-400 font-bold text-lg">20+</span>
+                        <span className="text-purple-400 font-bold text-base">20+</span>
                       </div>
                       
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-300 flex items-center gap-2">
+                        <span className="text-slate-300 flex items-center gap-2 text-sm">
                           <TrendingUp className="w-4 h-4" />
                           CGPA
                         </span>
-                        <span className="text-orange-400 font-bold text-lg">8.34</span>
+                        <span className="text-orange-400 font-bold text-base">8.34</span>
                       </div>
                     </div>
                   </div>
@@ -371,6 +463,12 @@ export default function Portfolio() {
                   color: "purple"
                 },
                 {
+                  icon: TrendingUp,
+                  title: "Data Analysis",
+                  description: "Extracting actionable insights from complex datasets, statistical modeling, and data visualization for informed decision-making.",
+                  color: "cyan"
+                },
+                {
                   icon: Users,
                   title: "Project Management",
                   description: "Leading teams and managing large-scale events and projects with focus on efficiency and results.",
@@ -381,6 +479,7 @@ export default function Portfolio() {
                 const colorClasses = {
                   blue: 'from-blue-500 to-indigo-600',
                   purple: 'from-purple-500 to-violet-600',
+                  cyan: 'from-cyan-500 to-teal-600',
                   green: 'from-green-500 to-emerald-600'
                 };
                 
@@ -547,7 +646,7 @@ export default function Portfolio() {
             
             {/* Data Structures & Algorithms */}
             <div className="group relative bg-gradient-to-br from-slate-800 to-orange-900 rounded-2xl p-8 shadow-xl border border-orange-800/30 hover:border-orange-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
-                 onClick={() => window.open('https://github.com/AnnieMahajan454', '_blank')}>
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/DSA-Practice', '_blank')}>
               {/* Background Decoration */}
               <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
                 <Code className="w-8 h-8 text-orange-400" />
@@ -592,7 +691,7 @@ export default function Portfolio() {
             
             {/* Machine Learning Projects */}
             <div className="group relative bg-gradient-to-br from-slate-800 to-pink-900 rounded-2xl p-8 shadow-xl border border-pink-800/30 hover:border-pink-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
-                 onClick={() => window.open('https://github.com/AnnieMahajan454', '_blank')}>
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/ML-Model-Collection', '_blank')}>
               {/* Background Decoration */}
               <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
                 <Rocket className="w-8 h-8 text-pink-400" />
@@ -637,7 +736,7 @@ export default function Portfolio() {
             
             {/* Web Development Portfolio */}
             <div className="group relative bg-gradient-to-br from-slate-800 to-indigo-900 rounded-2xl p-8 shadow-xl border border-indigo-800/30 hover:border-indigo-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
-                 onClick={() => window.open('https://github.com/AnnieMahajan454', '_blank')}>
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/project_management_tool-1', '_blank')}>
               {/* Background Decoration */}
               <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
                 <Globe className="w-8 h-8 text-indigo-400" />
