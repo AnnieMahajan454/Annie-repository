@@ -35,6 +35,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 
+// Portfolio with animations and updated certifications - v2.1
 export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
