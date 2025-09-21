@@ -1261,7 +1261,7 @@ export default function Portfolio() {
                   year: "2025",
                   color: "red",
                   icon: Target,
-                  link: "https://drive.google.com/file/d/1H8TWX2wGFABpOQGjE9E-AQICd7WKJ6ec/view?usp=drive_link"
+                  link: "https://drive.google.com/file/d/1H8TWX2wGFABpOQGjE9E-AQICd7WKJ6ec/view?usp=sharing"
                 },
                 {
                   title: "MERN Full-Stack Web Development",
@@ -1269,7 +1269,7 @@ export default function Portfolio() {
                   year: "2025",
                   color: "green",
                   icon: Globe,
-                  link: "https://drive.google.com/file/d/1kZhouNmELaMkMxP8cYPdo416aF-SkZst/view?usp=drive_link"
+                  link: "https://drive.google.com/file/d/1kZhouNmELaMkMxP8cYPdo416aF-SkZst/view?usp=sharing"
                 },
                 {
                   title: "Advanced Excel Certification",
@@ -1277,7 +1277,7 @@ export default function Portfolio() {
                   year: "2025",
                   color: "emerald",
                   icon: TrendingUp,
-                  link: "https://drive.google.com/file/d/18LuptPO13HUN6VbvbLvw875ia1GugMu6/view?usp=drive_link"
+                  link: "https://drive.google.com/file/d/18LuptPO13HUN6VbvbLvw875ia1GugMu6/view?usp=sharing"
                 },
                 {
                   title: "Python, C & C++",
@@ -1285,7 +1285,7 @@ export default function Portfolio() {
                   year: "2024",
                   color: "blue", 
                   icon: Code,
-                  link: "https://drive.google.com/drive/folders/1CxY-t3rbV6JFT_7oEsfFJzLmH1aGkHm_?usp=drive_link"
+                  link: "https://drive.google.com/drive/folders/1CxY-t3rbV6JFT_7oEsfFJzLmH1aGkHm_?usp=sharing"
                 }
               ].map((cert, index) => {
                 const Icon = cert.icon;
