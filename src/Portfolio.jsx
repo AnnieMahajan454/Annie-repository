@@ -1252,46 +1252,69 @@ export default function Portfolio() {
           {/* Certifications Preview */}
           <div className="mt-20 text-center">
             <h3 className="text-3xl font-bold text-white mb-8">Professional Certifications</h3>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
-                  title: "Full Stack Web Development",
+                  title: "Oracle Generative AI Professional",
+                  issuer: "Oracle",
+                  year: "2025",
+                  color: "red",
+                  icon: Target,
+                  link: "https://drive.google.com/file/d/1H8TWX2wGFABpOQGjE9E-AQICd7WKJ6ec/view?usp=drive_link"
+                },
+                {
+                  title: "MERN Full-Stack Web Development",
                   issuer: "Ethnus",
                   year: "2025",
                   color: "green",
-                  icon: Globe
+                  icon: Globe,
+                  link: "https://drive.google.com/file/d/1kZhouNmELaMkMxP8cYPdo416aF-SkZst/view?usp=drive_link"
+                },
+                {
+                  title: "Advanced Excel Certification",
+                  issuer: "Internshala",
+                  year: "2025",
+                  color: "emerald",
+                  icon: TrendingUp,
+                  link: "https://drive.google.com/file/d/18LuptPO13HUN6VbvbLvw875ia1GugMu6/view?usp=drive_link"
                 },
                 {
                   title: "Python, C & C++",
                   issuer: "IIT Bombay",
                   year: "2024",
                   color: "blue", 
-                  icon: Code
-                },
-                {
-                  title: "Core Committee Certificate",
-                  issuer: "Event Managers Club",
-                  year: "2024-2025",
-                  color: "purple",
-                  icon: Award
+                  icon: Code,
+                  link: "https://drive.google.com/drive/folders/1CxY-t3rbV6JFT_7oEsfFJzLmH1aGkHm_?usp=drive_link"
                 }
               ].map((cert, index) => {
                 const Icon = cert.icon;
                 const colorClasses = {
                   green: 'from-green-500 to-emerald-600 border-green-500/30 hover:border-green-400/50',
                   blue: 'from-blue-500 to-indigo-600 border-blue-500/30 hover:border-blue-400/50',
-                  purple: 'from-purple-500 to-violet-600 border-purple-500/30 hover:border-purple-400/50'
+                  purple: 'from-purple-500 to-violet-600 border-purple-500/30 hover:border-purple-400/50',
+                  red: 'from-red-500 to-orange-600 border-red-500/30 hover:border-red-400/50',
+                  emerald: 'from-emerald-500 to-teal-600 border-emerald-500/30 hover:border-emerald-400/50'
                 };
                 
                 return (
-                  <div key={index} className={`bg-slate-800/60 rounded-2xl p-6 border ${colorClasses[cert.color]} transition-all duration-300 hover:transform hover:scale-105 group`}>
+                  <a 
+                    key={index} 
+                    href={cert.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`bg-slate-800/60 rounded-2xl p-6 border ${colorClasses[cert.color]} transition-all duration-300 hover:transform hover:scale-105 group cursor-pointer block`}
+                  >
                     <div className={`w-12 h-12 bg-gradient-to-r ${colorClasses[cert.color].split(' ')[0]} ${colorClasses[cert.color].split(' ')[1]} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <h4 className="text-lg font-bold text-white mb-2">{cert.title}</h4>
                     <p className="text-slate-300 mb-1">{cert.issuer}</p>
-                    <p className="text-slate-400 text-sm">{cert.year}</p>
-                  </div>
+                    <p className="text-slate-400 text-sm mb-2">{cert.year}</p>
+                    <div className="flex items-center justify-center gap-1 text-xs text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ExternalLink className="w-3 h-3" />
+                      <span>View Certificate</span>
+                    </div>
+                  </a>
                 );
               })}
             </div>
