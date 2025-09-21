@@ -1,8 +1,8 @@
-# 🎯 Annie Mahajan - Professional Portfolio
+# Annie Mahajan - Portfolio
 
 A modern, responsive portfolio website built with React and powered by cutting-edge web technologies. This portfolio showcases my skills, experience, and projects with professional animations and interactive elements.
 
-## ✨ Features
+## Features
 
 ### 🎨 Design & User Experience
 - **Professional slate/blue color scheme** - Corporate-friendly presentation
@@ -135,10 +135,3 @@ This portfolio can be deployed to any static hosting service:
 - LinkedIn: [Annie Mahajan](https://www.linkedin.com/in/annie-mahajan-1v7i0v4u)
 - GitHub: [@AnnieMahajan454](https://github.com/AnnieMahajan454)
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-*Built with ❤️ by Annie Mahajan - Computer Science Student at VIT Chennai*
