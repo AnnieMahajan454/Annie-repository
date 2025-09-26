@@ -1042,10 +1042,7 @@ export default function Portfolio() {
                       </div>
                       <div className="flex items-center gap-2 text-sm text-slate-400">
                         <Calendar className="w-4 h-4" />
-                        2024 - Present
-                        <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded-full text-xs font-medium ml-2">
-                          Current Role
-                        </span>
+                        2024 - 2025
                       </div>
                     </div>
                     <div className="text-right">
@@ -1256,12 +1253,20 @@ export default function Portfolio() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
-                  title: "Oracle Generative AI Professional",
+                  title: "Generative AI Professional",
                   issuer: "Oracle",
                   year: "2025",
                   color: "red",
                   icon: Target,
-                  link: "https://drive.google.com/file/d/1H8TWX2wGFABpOQGjE9E-AQICd7WKJ6ec/view?usp=drive_link"
+                  link: "https://drive.google.com/file/d/1H8TWX2wGFABpOQGie9E-AqIcd7WKJ6ec/view?usp=drive_link"
+                },
+      {
+                  title: "Data Science Professional",
+                  issuer: "Oracle",
+                  year: "2025",
+                  color: "purple",
+                  icon: Target,
+                  link: "https://drive.google.com/file/d/1HA0RcQCRGMXTq9y_VgrRPk8Ytphs8cs6/view?usp=drive_link"
                 },
                 {
                   title: "MERN Full-Stack Web Development",
@@ -1269,7 +1274,7 @@ export default function Portfolio() {
                   year: "2025",
                   color: "green",
                   icon: Globe,
-                  link: "https://drive.google.com/file/d/1kZhouNmELaMkMxP8cYPdo416aF-SkZst/view?usp=drive_link"
+                  link: "https://drive.google.com/file/d/1kZhoUNmELaHkMxP8cYPdo4i6aF-SkZst/view?usp=drive_link"
                 },
                 {
                   title: "Advanced Excel Certification",
@@ -1277,7 +1282,7 @@ export default function Portfolio() {
                   year: "2025",
                   color: "emerald",
                   icon: TrendingUp,
-                  link: "https://drive.google.com/file/d/18LuptPO13HUN6VbvbLvw875ia1GugMu6/view?usp=drive_link"
+                  link: "https://drive.google.com/file/d/18LuptPOi3HUN6VbvbLvw875ialGugMu6/view?usp=drive_link"
                 },
                 {
                   title: "Python, C & C++",
@@ -1285,7 +1290,7 @@ export default function Portfolio() {
                   year: "2024",
                   color: "blue", 
                   icon: Code,
-                  link: "https://drive.google.com/drive/folders/1CxY-t3rbV6JFT_7oEsfFJzLmH1aGkHm_?usp=drive_link"
+                  link: "https://drive.google.com/drive/folders/1CxY-t3rbV6JFT_7oEsfFJzLmHia6kHm_?usp=drive_link"
                 }
               ].map((cert, index) => {
                 const Icon = cert.icon;
