@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.GITHUB_PAGES === 'true' ? '/Annie-repository/' : '/',
+  base: './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

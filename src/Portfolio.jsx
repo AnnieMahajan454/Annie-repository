@@ -1,970 +1,1499 @@
-import { Card, CardContent } from "./components/ui/card";
-import { Button } from "./components/ui/button";
-import { Github, Linkedin, Mail, Code, Home, Book, Briefcase, Award, User, Phone, MapPin, Send, ExternalLink, Star, Sparkles, Zap, Rocket, Target, Globe, Download, ArrowRight, CheckCircle, TrendingUp, Users, MessageSquare, Calendar, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { TypeAnimation } from "react-type-animation";
+import React, { useState } from 'react';
+import { 
+  Github, 
+  Linkedin, 
+  Mail, 
+  Code, 
+  User, 
+  Briefcase, 
+  Award, 
+  Phone, 
+  MapPin,
+  ExternalLink,
+  Download,
+  Menu,
+  X,
+  Home,
+  Book,
+  TrendingUp,
+  Users,
+  Target,
+  Calendar,
+  Star,
+  Rocket,
+  Zap,
+  Globe,
+  Database,
+  CheckCircle,
+  Server,
+  Cpu,
+  Cloud,
+  GraduationCap,
+  Building,
+  Send,
+  MessageSquare,
+  ArrowRight
+} from 'lucide-react';
 
+// Portfolio with animations and updated certifications - v2.2 - Netlify deployment trigger
 export default function Portfolio() {
-  const darkMode = true; // Always dark mode
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [formStatus, setFormStatus] = useState('');
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    
-    // Simulate loading
-    setTimeout(() => setIsLoading(false), 1500);
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Generate random positions for background elements
+  const backgroundStars = Array.from({ length: 30 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 1.5 + 0.5,
+    opacity: Math.random() * 0.15 + 0.05,
+    duration: Math.random() * 25 + 15,
+    delay: Math.random() * 25
+  }));
 
-  const skillsData = [
-    { name: 'JavaScript/React', level: 90, category: 'Frontend' },
-    { name: 'Python', level: 85, category: 'Programming' },
-    { name: 'Java', level: 80, category: 'Programming' },
-    { name: 'Machine Learning', level: 75, category: 'AI/ML' },
-    { name: 'Node.js', level: 85, category: 'Backend' },
-    { name: 'MySQL', level: 80, category: 'Database' },
-    { name: 'AWS Cloud', level: 70, category: 'Cloud' },
-    { name: 'ROS', level: 75, category: 'Robotics' },
-  ];
+  const floatingParticles = Array.from({ length: 12 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 3 + 1,
+    opacity: Math.random() * 0.08 + 0.02,
+    duration: Math.random() * 30 + 20,
+    delay: Math.random() * 20
+  }));
 
-
-  const FloatingIcons = () => (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      <div className="absolute top-20 left-10 animate-bounce">
-        <Code className="w-6 h-6 text-purple-300 opacity-20" />
-      </div>
-      <div className="absolute top-40 right-16 animate-pulse">
-        <Zap className="w-8 h-8 text-indigo-300 opacity-20" />
-      </div>
-      <div className="absolute top-60 left-1/4 animate-spin" style={{animationDuration: '8s'}}>
-        <Star className="w-5 h-5 text-pink-300 opacity-20" />
-      </div>
-      <div className="absolute top-80 right-1/3 animate-bounce" style={{animationDelay: '2s'}}>
-        <Sparkles className="w-7 h-7 text-cyan-300 opacity-20" />
-      </div>
-      <div className="absolute bottom-40 left-20 animate-pulse" style={{animationDelay: '1s'}}>
-        <Rocket className="w-6 h-6 text-emerald-300 opacity-20" />
-      </div>
-      <div className="absolute bottom-60 right-20 animate-bounce" style={{animationDelay: '3s'}}>
-        <Target className="w-5 h-5 text-orange-300 opacity-20" />
-      </div>
-    </div>
-  );
-
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
-        <motion.div 
-          className="text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="w-16 h-16 border-4 border-slate-300 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-300 text-lg">Loading...</p>
-        </motion.div>
-      </div>
-    );
-  }
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setActiveSection(sectionId);
+      setIsMenuOpen(false);
+    }
+  };
 
   return (
     <div className="bg-slate-900 text-slate-100 font-sans relative overflow-x-hidden">
-      {/* Navbar */}
-      <motion.nav 
-        className={`fixed top-0 left-0 w-full flex justify-between items-center px-6 md:px-10 py-4 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-slate-900/95 backdrop-blur-md shadow-xl border-b border-slate-700/50" : "bg-transparent"
-        }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-            <Code className="w-6 h-6 text-white" />
-          </div>
-          <h1 className="font-bold text-xl text-white">Annie Mahajan</h1>
-        </div>
-        
-        <div className="hidden md:flex gap-8">
-          {['home', 'about', 'skills', 'projects', 'experience', 'certificates', 'contact'].map((section) => (
-            <a 
-              key={section}
-              href={`#${section}`} 
-              className="text-slate-300 hover:text-blue-400 transition-all duration-300 capitalize font-medium hover:scale-105 flex items-center gap-2"
-            >
-              {section === 'home' && <Home size={16} />}
-              {section === 'about' && <User size={16} />}
-              {section === 'skills' && <Zap size={16} />}
-              {section === 'projects' && <Code size={16} />}
-              {section === 'experience' && <Briefcase size={16} />}
-              {section === 'certificates' && <Award size={16} />}
-              {section === 'contact' && <Mail size={16} />}
-              {section}
-            </a>
-          ))}
-        </div>
-        
-        <motion.button 
-          className="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-2 rounded-full text-white font-medium hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Download size={16} />
-          Resume
-        </motion.button>
-      </motion.nav>
-
-      {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white px-6 md:px-10 pt-28 overflow-hidden">
-        {/* Professional Background Pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"></div>
-        </div>
-        
-        {/* Professional Floating Elements */}
-        <motion.div 
-          className="absolute top-32 left-20 hidden md:block"
-          animate={{ y: [0, -20, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div className="w-16 h-16 bg-slate-800/40 rounded-xl flex items-center justify-center backdrop-blur-sm border border-slate-700/30">
-            <Code className="w-8 h-8 text-blue-400" />
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          className="absolute top-40 right-20 hidden md:block"
-          animate={{ y: [0, -15, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        >
-          <div className="w-12 h-12 bg-slate-800/40 rounded-xl flex items-center justify-center backdrop-blur-sm border border-slate-700/30">
-            <Star className="w-6 h-6 text-indigo-400" />
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          className="absolute bottom-40 left-20 hidden md:block"
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        >
-          <div className="w-14 h-14 bg-slate-800/40 rounded-xl flex items-center justify-center backdrop-blur-sm border border-slate-700/30">
-            <Target className="w-7 h-7 text-cyan-400" />
-          </div>
-        </motion.div>
-        
-        <div className="relative z-10 text-center max-w-4xl mx-auto">
-          <motion.div 
-            className="mb-8"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Moving Stars */}
+        {backgroundStars.map((star) => (
+          <div
+            key={`star-${star.id}`}
+            className="absolute w-1 h-1 bg-blue-400 rounded-full animate-pulse"
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              opacity: star.opacity,
+              animationDuration: `${star.duration}s`,
+              animationDelay: `${star.delay}s`,
+              transform: `scale(${star.size})`,
+            }}
           >
-            <div className="w-32 h-32 mx-auto mb-8 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full shadow-2xl"></div>
-              <div className="absolute inset-3 bg-slate-900 rounded-full flex items-center justify-center">
-                <User className="w-16 h-16 text-blue-400" />
+            <div 
+              className="w-full h-full bg-blue-400 rounded-full"
+              style={{
+                animation: `twinkle ${star.duration}s ease-in-out infinite ${star.delay}s`
+              }}
+            />
+          </div>
+        ))}
+        
+        {/* Floating Particles */}
+        {floatingParticles.map((particle) => (
+          <div
+            key={`particle-${particle.id}`}
+            className="absolute rounded-full bg-gradient-to-r from-blue-400/10 to-indigo-400/10"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              opacity: particle.opacity,
+              animation: `float ${particle.duration}s ease-in-out infinite ${particle.delay}s`
+            }}
+          />
+        ))}
+        
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.008]">
+          <div className="w-full h-full" style={{
+            backgroundImage: `
+              linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px'
+          }} />
+        </div>
+        
+        {/* Gradient Overlays */}
+        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-slate-900/80 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-slate-900/80 to-transparent" />
+      </div>
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 w-full z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50 relative">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex justify-between items-center py-4">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                <Code className="w-6 h-6 text-white" />
+              </div>
+              <h1 className="font-bold text-xl text-white">Annie Mahajan</h1>
+            </div>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex gap-8">
+              {[
+                { id: 'home', label: 'Home', icon: Home },
+                { id: 'about', label: 'About', icon: User },
+                { id: 'projects', label: 'Projects', icon: Code },
+                { id: 'skills', label: 'Skills', icon: Award },
+                { id: 'experience', label: 'Experience', icon: Briefcase },
+                { id: 'contact', label: 'Contact', icon: Mail }
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button 
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 hover:bg-slate-800 ${
+                      activeSection === item.id ? 'text-blue-400 bg-slate-800' : 'text-slate-300'
+                    }`}
+                  >
+                    <Icon size={16} />
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+            
+            {/* Resume Button */}
+            <a 
+              href="https://drive.google.com/file/d/1jj0VzLt90X9nLzR60RM8H_GQ5UG9nkmR/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-2 rounded-full text-white font-medium hover:shadow-lg transition-all duration-300 hover:scale-105"
+            >
+              <Download size={16} />
+              Resume
+            </a>
+            
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-slate-800 transition-colors"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+          
+          {/* Mobile Navigation */}
+          {isMenuOpen && (
+            <div className="md:hidden border-t border-slate-700/50 py-4">
+              <div className="flex flex-col gap-2">
+                {[
+                  { id: 'home', label: 'Home', icon: Home },
+                  { id: 'about', label: 'About', icon: User },
+                  { id: 'projects', label: 'Projects', icon: Code },
+                  { id: 'skills', label: 'Skills', icon: Award },
+                  { id: 'experience', label: 'Experience', icon: Briefcase },
+                  { id: 'contact', label: 'Contact', icon: Mail }
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button 
+                      key={item.id}
+                      onClick={() => scrollToSection(item.id)}
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-slate-800 transition-colors text-slate-300"
+                    >
+                      <Icon size={20} />
+                      {item.label}
+                    </button>
+                  );
+                })}
+                <a 
+                  href="https://drive.google.com/file/d/1jj0VzLt90X9nLzR60RM8H_GQ5UG9nkmR/view?usp=drive_link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-4 py-3 mt-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300"
+                >
+                  <Download size={20} />
+                  View Resume
+                </a>
               </div>
             </div>
-          </motion.div>
+          )}
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section id="home" className="min-h-screen flex flex-col justify-center items-center px-6 pt-20">
+        <div className="text-center max-w-4xl mx-auto">
+          <div className="w-32 h-32 mx-auto mb-8 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full animate-pulse opacity-20"></div>
+            <div className="absolute inset-3 bg-slate-800 rounded-full flex items-center justify-center border-4 border-blue-500/20">
+              <User className="w-16 h-16 text-blue-400" />
+            </div>
+          </div>
           
-          <motion.h1 
-            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-indigo-200 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-indigo-200 bg-clip-text text-transparent">
             Annie Mahajan
-          </motion.h1>
+          </h1>
           
-          <motion.div 
-            className="mb-8 h-16 flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <TypeAnimation
-              sequence={[
-                'Full-Stack Developer',
-                2000,
-                'AI/ML Engineer',
-                2000,
-                'Computer Science Student',
-                2000,
-                'Problem Solver',
-                2000,
-                'Data Analyst',
-                2000,
-              ]}
-              wrapper="span"
-              speed={50}
-              className="text-xl md:text-2xl text-blue-300 font-semibold"
-              repeat={Infinity}
-            />
-          </motion.div>
+          <p className="text-xl md:text-2xl text-blue-300 font-semibold mb-8">
+            Full-Stack Developer & AI/ML Engineer
+          </p>
           
-          <motion.div 
-            className="flex flex-wrap justify-center gap-3 mb-12 text-sm md:text-base"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
+          <div className="flex flex-wrap justify-center gap-3 mb-12 text-sm md:text-base">
             <span className="px-4 py-2 bg-slate-800/60 rounded-full backdrop-blur-sm border border-slate-600/30 flex items-center gap-2 text-slate-200">
               <Book className="w-4 h-4" /> B.Tech CSE (AI & Robotics)
             </span>
             <span className="px-4 py-2 bg-slate-800/60 rounded-full backdrop-blur-sm border border-slate-600/30 flex items-center gap-2 text-slate-200">
-              <TrendingUp className="w-4 h-4" /> CGPA: 8.34
+              <Award className="w-4 h-4" /> CGPA: 8.34
             </span>
             <span className="px-4 py-2 bg-slate-800/60 rounded-full backdrop-blur-sm border border-slate-600/30 flex items-center gap-2 text-slate-200">
               <MapPin className="w-4 h-4" /> Chennai, India
             </span>
-          </motion.div>
+          </div>
           
-          <motion.div 
-            className="flex justify-center gap-4 md:gap-6 mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-          >
+          {/* Social Links */}
+          <div className="flex justify-center gap-4 mb-12">
             {[
-              { href: "mailto:mahajanannie411@gmail.com", icon: Mail, label: "Email" },
-              { href: "https://github.com/AnnieMahajan454", icon: Github, label: "GitHub" },
-              { href: "https://leetcode.com/u/AnnieMahajan/", icon: Code, label: "LeetCode" },
-              { href: "https://www.linkedin.com/in/annie-mahajan-1v7i0v4u", icon: Linkedin, label: "LinkedIn" }
-            ].map((social, index) => (
-              <motion.a 
-                key={social.label}
-                href={social.href} 
-                className="group relative"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
-              >
-                <div className="w-14 h-14 bg-slate-800/60 rounded-xl flex items-center justify-center backdrop-blur-sm border border-slate-600/30 hover:bg-slate-700/60 hover:border-blue-500/50 transition-all duration-300">
-                  <social.icon className="w-6 h-6 text-slate-300 group-hover:text-blue-400 transition-colors" />
-                </div>
-                <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {social.label}
-                </span>
-              </motion.a>
-            ))}
-          </motion.div>
+              { href: "mailto:mahajanannie411@gmail.com", icon: Mail, label: "Email", color: "purple" },
+              { href: "https://github.com/AnnieMahajan454", icon: Github, label: "GitHub", color: "gray" },
+              { href: "https://leetcode.com/u/AnnieMahajan/", icon: Code, label: "LeetCode", color: "orange" },
+              { href: "https://www.linkedin.com/in/annie-mahajan-1v7i0v4u", icon: Linkedin, label: "LinkedIn", color: "blue" }
+            ].map((social) => {
+              const Icon = social.icon;
+              const colorClasses = {
+                purple: 'bg-purple-600 hover:bg-purple-700',
+                gray: 'bg-slate-800 hover:bg-slate-700',
+                orange: 'bg-orange-600 hover:bg-orange-700',
+                blue: 'bg-blue-600 hover:bg-blue-700'
+              };
+              
+              return (
+                <a 
+                  key={social.label}
+                  href={social.href} 
+                  target={social.href.startsWith('http') ? '_blank' : undefined}
+                  rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className={`w-14 h-14 ${colorClasses[social.color]} rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 group`}
+                >
+                  <Icon className="w-6 h-6 text-white" />
+                  <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    {social.label}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
           
-          <motion.div 
-            className="flex flex-col sm:flex-row justify-center gap-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.4 }}
-          >
-            <motion.button 
-              onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 justify-center shadow-lg"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 justify-center shadow-lg hover:shadow-xl"
             >
-              <MessageSquare className="w-5 h-5" />
+              <Mail className="w-5 h-5" />
               Get In Touch
-            </motion.button>
-            <motion.button 
-              onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })}
+            </button>
+            <button 
+              onClick={() => scrollToSection('projects')}
               className="px-8 py-3 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-600/30 hover:border-blue-500/50 text-slate-200 font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 justify-center backdrop-blur-sm"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
-              <ArrowRight className="w-5 h-5" />
+              <Code className="w-5 h-5" />
               View My Work
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
         </div>
       </section>
-
+      
       {/* About Section */}
-      <section id="about" className="relative py-20 px-6 md:px-10 bg-slate-800/50">
+      <section id="about" className="py-20 px-6 lg:px-10 bg-slate-800/50">
         <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold mb-16 text-center bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            About Me
-          </motion.h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+              About Me
+            </h2>
+            <p className="text-slate-400 text-lg">Passionate about creating intelligent solutions and building the future</p>
+          </div>
           
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6"
-            >
-              <p className="text-lg text-slate-300 leading-relaxed">
-                I am a dedicated Computer Science and Engineering student specializing in Artificial Intelligence & Robotics at VIT Chennai. My passion lies in building intelligent systems, developing full-stack web applications, and solving complex real-world problems through innovative technology solutions.
-              </p>
+            {/* Bio Content */}
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <p className="text-lg text-slate-300 leading-relaxed">
+                  I am a dedicated Computer Science and Engineering student specializing in 
+                  <span className="text-blue-400 font-semibold"> Artificial Intelligence & Robotics </span>
+                  at VIT Chennai. My passion lies in building intelligent systems, developing 
+                  full-stack web applications, and solving complex real-world problems through 
+                  innovative technology solutions.
+                </p>
+                
+                <p className="text-lg text-slate-300 leading-relaxed">
+                  With a strong foundation in both theoretical concepts and practical applications, 
+                  I constantly strive to bridge the gap between cutting-edge research and industry 
+                  applications. My goal is to contribute to the advancement of AI and robotics while 
+                  creating impactful solutions for businesses and society.
+                </p>
+                
+                <p className="text-lg text-slate-300 leading-relaxed">
+                  As an Operations Manager at the Event Managers Club, I've successfully organized 
+                  and managed 300+ events, demonstrating my leadership skills and ability to handle 
+                  complex logistics. Additionally, I have extensive experience in data analysis, 
+                  statistical modeling, and extracting actionable insights from complex datasets 
+                  to drive decision-making and optimize performance.
+                </p>
+              </div>
               
-              <p className="text-lg text-slate-300 leading-relaxed">
-                With a strong foundation in both theoretical concepts and practical applications, I constantly strive to bridge the gap between cutting-edge research and industry applications. My goal is to contribute to the advancement of AI and robotics while creating impactful solutions for businesses and society.
-              </p>
-              
+              {/* Skills Tags */}
               <div className="flex flex-wrap gap-3 mt-8">
                 {[
                   { label: "AI/ML Specialist", color: "blue" },
                   { label: "Full-Stack Developer", color: "green" },
+                  { label: "Data Analyst", color: "cyan" },
                   { label: "Problem Solver", color: "purple" },
                   { label: "Team Leader", color: "orange" }
-                ].map((tag, index) => (
-                  <motion.span
+                ].map((tag) => (
+                  <span
                     key={tag.label}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 cursor-default
                       ${tag.color === 'blue' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
                         tag.color === 'green' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
+                        tag.color === 'cyan' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' :
                         tag.color === 'purple' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' :
                         'bg-orange-500/20 text-orange-300 border border-orange-500/30'}
                     `}
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     {tag.label}
-                  </motion.span>
+                  </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
             
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="flex justify-center"
-            >
+            {/* Stats Card */}
+            <div className="flex justify-center">
               <div className="relative">
                 <div className="w-80 h-80 bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-8 shadow-2xl border border-slate-600/30">
                   <div className="text-center space-y-6">
-                    <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl mx-auto flex items-center justify-center">
-                      <User className="w-12 h-12 text-white" />
+                    {/* Profile Image */}
+                    <div className="w-32 h-32 mx-auto mb-6 relative group">
+                      <div className="w-full h-full rounded-2xl border-4 border-slate-600/30 shadow-xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-indigo-600/20">
+                        <img 
+                          src="/annie-photo.jpg" 
+                          alt="Annie Mahajan"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-indigo-600/20 flex items-center justify-center" style={{display: 'none'}}>
+                          <div className="text-center">
+                            <User className="w-16 h-16 text-blue-400 mb-2 group-hover:scale-110 transition-transform duration-300" />
+                            <div className="text-xs text-slate-400 font-medium">Annie</div>
+                            <div className="text-xs text-slate-500">Mahajan</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-slate-800 flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+                      </div>
                     </div>
                     
-                    <div className="space-y-4">
+                    {/* Stats */}
+                    <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-300">Projects Completed</span>
-                        <span className="text-blue-400 font-bold">15+</span>
+                        <span className="text-slate-300 flex items-center gap-2 text-sm">
+                          <Code className="w-4 h-4" />
+                          Projects Completed
+                        </span>
+                        <span className="text-blue-400 font-bold text-base">15+</span>
                       </div>
+                      
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-300">Events Managed</span>
-                        <span className="text-green-400 font-bold">300+</span>
+                        <span className="text-slate-300 flex items-center gap-2 text-sm">
+                          <Calendar className="w-4 h-4" />
+                          Events Managed
+                        </span>
+                        <span className="text-green-400 font-bold text-base">300+</span>
                       </div>
+                      
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-300">Technologies</span>
-                        <span className="text-purple-400 font-bold">20+</span>
+                        <span className="text-slate-300 flex items-center gap-2 text-sm">
+                          <Target className="w-4 h-4" />
+                          Technologies
+                        </span>
+                        <span className="text-purple-400 font-bold text-base">20+</span>
                       </div>
+                      
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-300">CGPA</span>
-                        <span className="text-orange-400 font-bold">8.34</span>
+                        <span className="text-slate-300 flex items-center gap-2 text-sm">
+                          <TrendingUp className="w-4 h-4" />
+                          CGPA
+                        </span>
+                        <span className="text-orange-400 font-bold text-base">8.34</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                {/* Floating decorative elements */}
-                <motion.div
-                  className="absolute -top-4 -right-4 w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                >
+                {/* Floating decorative element */}
+                <div className="absolute -top-4 -right-4 w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center animate-pulse">
                   <Code className="w-8 h-8 text-blue-400" />
-                </motion.div>
+                </div>
               </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Education */}
-      <section id="education" className="p-16 max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent flex items-center justify-center gap-3">
-          <Book className="w-8 h-8 text-purple-600" />
-          Education
-        </h2>
-        <div className="space-y-6">
-          <div className={`relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-r from-gray-800 to-purple-900" : "bg-gradient-to-r from-white to-purple-100"} shadow-xl border ${darkMode ? "border-purple-800" : "border-purple-200"} transform hover:scale-105 transition-all duration-300`}>
-            <div className="absolute top-4 right-4">
-              <Star className="w-6 h-6 text-yellow-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-300 mb-2">VIT Chennai</h3>
-            <p className="text-lg mb-2">B.Tech CSE (AI & Robotics)</p>
-            <div className="flex items-center gap-4">
-              <span className="px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
-                CGPA: 8.34
-              </span>
-              <span className="text-gray-600 dark:text-gray-400">2023–Present</span>
             </div>
           </div>
-          <div className={`relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-r from-gray-800 to-indigo-900" : "bg-gradient-to-r from-white to-indigo-100"} shadow-xl border ${darkMode ? "border-indigo-800" : "border-indigo-200"} transform hover:scale-105 transition-all duration-300`}>
-            <div className="absolute top-4 right-4">
-              <Award className="w-6 h-6 text-orange-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-indigo-700 dark:text-indigo-300 mb-2">Presentation Convent Sr Sec School, Jammu</h3>
-            <p className="text-lg mb-2">PCM with English</p>
-            <div className="flex items-center gap-4">
-              <span className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
-                90%
-              </span>
-              <span className="text-gray-600 dark:text-gray-400">2023</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects */}
-      <section id="projects" className="relative p-16 max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent flex items-center justify-center gap-3">
-          <Rocket className="w-8 h-8 text-purple-600" />
-          Featured Projects
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Smart Construction Planner */}
-          <motion.div 
-            className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-purple-900" : "bg-gradient-to-br from-white to-purple-50"} shadow-xl border ${darkMode ? "border-purple-800" : "border-purple-200"} transform hover:scale-105 hover:-rotate-1 transition-all duration-500 cursor-pointer`}
-            onClick={() => window.open('https://github.com/AnnieMahajan454/Smart-Construction-Planner', '_blank')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
-              <Zap className="w-8 h-8 text-purple-500" />
-            </div>
-            <div className="mb-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mb-4">
-                <Target className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-3 text-purple-700 dark:text-purple-300">Smart Construction Planner</h3>
-              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>AI-driven tool optimizing construction using pedestrian flow and geospatial data for intelligent urban planning.</p>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
-                AI/ML
-              </span>
-              <div className="flex items-center gap-2">
-                <Github className="w-4 h-4 text-purple-500 group-hover:text-purple-700 transition-colors" />
-                <ExternalLink className="w-5 h-5 text-purple-500 group-hover:text-purple-700 transition-colors" />
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
-              Click to view on GitHub →
-            </div>
-          </motion.div>
           
-          {/* Project Management System */}
-          <motion.div 
-            className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-green-900" : "bg-gradient-to-br from-white to-green-50"} shadow-xl border ${darkMode ? "border-green-800" : "border-green-200"} transform hover:scale-105 hover:rotate-1 transition-all duration-500 cursor-pointer`}
-            onClick={() => window.open('https://github.com/AnnieMahajan454/MERN-Full-Stack', '_blank')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
-              <Globe className="w-8 h-8 text-green-500" />
-            </div>
-            <div className="mb-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mb-4">
-                <Briefcase className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-3 text-green-700 dark:text-green-300">Project Management System</h3>
-              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>Full-stack MERN application with authentication, real-time updates, and collaboration tools for team management.</p>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
-                MERN Stack
-              </span>
-              <div className="flex items-center gap-2">
-                <Github className="w-4 h-4 text-green-500 group-hover:text-green-700 transition-colors" />
-                <ExternalLink className="w-5 h-5 text-green-500 group-hover:text-green-700 transition-colors" />
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-green-400 opacity-0 group-hover:opacity-100 transition-opacity">
-              Click to view on GitHub →
-            </div>
-          </motion.div>
-          
-          {/* Financial Portfolio Tracker */}
-          <motion.div 
-            className={`group relative rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-blue-900" : "bg-gradient-to-br from-white to-blue-50"} shadow-xl border ${darkMode ? "border-blue-800" : "border-blue-200"} transform hover:scale-105 hover:-rotate-1 transition-all duration-500 cursor-pointer`}
-            onClick={() => window.open('https://github.com/AnnieMahajan454/Financial-Portfolio-Tracker', '_blank')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
-              <TrendingUp className="w-8 h-8 text-blue-500" />
-            </div>
-            <div className="mb-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mb-4">
-                <Target className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-3 text-blue-700 dark:text-blue-300">Financial Portfolio Tracker</h3>
-              <p className={`text-lg leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-600"}`}>Advanced financial tracking application with real-time market data, portfolio analytics, and investment insights.</p>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
-                FinTech
-              </span>
-              <div className="flex items-center gap-2">
-                <Github className="w-4 h-4 text-blue-500 group-hover:text-blue-700 transition-colors" />
-                <ExternalLink className="w-5 h-5 text-blue-500 group-hover:text-blue-700 transition-colors" />
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
-              Click to view on GitHub →
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Skills Section */}
-      <section id="skills" className="relative py-20 px-6 md:px-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold mb-16 text-center bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Technical Expertise
-          </motion.h2>
-          
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Skills Progress Bars */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6"
-            >
-              <h3 className="text-2xl font-bold text-slate-200 mb-8">Skills & Proficiency</h3>
-              {skillsData.map((skill, index) => {
-                const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
-                return (
-                  <div key={skill.name} ref={ref} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-300 font-medium">{skill.name}</span>
-                      <span className="text-blue-400 font-bold">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-slate-700/50 rounded-full h-3">
-                      <motion.div
-                        className="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full shadow-lg"
-                        initial={{ width: 0 }}
-                        animate={inView ? { width: `${skill.level}%` } : { width: 0 }}
-                        transition={{ duration: 1.5, delay: index * 0.1 }}
-                      />
-                    </div>
-                    <div className="text-xs text-slate-400">{skill.category}</div>
-                  </div>
-                );
-              })}
-            </motion.div>
-            
-            {/* Skills Categories */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="grid grid-cols-2 gap-6"
-            >
+          {/* What I Do Section */}
+          <div className="mt-20">
+            <h3 className="text-3xl font-bold text-center mb-12 text-white">What I Do</h3>
+            <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  category: "Frontend",
-                  icon: Globe,
-                  skills: ["React.js", "HTML5/CSS3", "JavaScript", "Tailwind CSS"],
-                  color: "from-green-500 to-emerald-600"
-                },
-                {
-                  category: "Backend",
                   icon: Code,
-                  skills: ["Node.js", "Python", "Java", "MySQL"],
-                  color: "from-blue-500 to-indigo-600"
+                  title: "Full-Stack Development",
+                  description: "Building end-to-end web applications using modern technologies like React, Node.js, and cloud platforms.",
+                  color: "blue"
                 },
                 {
-                  category: "AI/ML",
-                  icon: Zap,
-                  skills: ["Machine Learning", "Data Analysis", "TensorFlow", "Scikit-learn"],
-                  color: "from-purple-500 to-violet-600"
-                },
-                {
-                  category: "Tools",
                   icon: Target,
-                  skills: ["Git/GitHub", "VS Code", "AWS", "Docker"],
-                  color: "from-orange-500 to-red-600"
+                  title: "AI/ML Solutions",
+                  description: "Developing intelligent systems and machine learning models to solve complex real-world problems.",
+                  color: "purple"
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Data Analysis",
+                  description: "Extracting actionable insights from complex datasets, statistical modeling, and data visualization for informed decision-making.",
+                  color: "cyan"
+                },
+                {
+                  icon: Users,
+                  title: "Project Management",
+                  description: "Leading teams and managing large-scale events and projects with focus on efficiency and results.",
+                  color: "green"
                 }
-              ].map((category, index) => {
-                const IconComponent = category.icon;
+              ].map((service, index) => {
+                const Icon = service.icon;
+                const colorClasses = {
+                  blue: 'from-blue-500 to-indigo-600',
+                  purple: 'from-purple-500 to-violet-600',
+                  cyan: 'from-cyan-500 to-teal-600',
+                  green: 'from-green-500 to-emerald-600'
+                };
+                
                 return (
-                  <motion.div
-                    key={category.category}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="bg-slate-800/60 rounded-2xl p-6 border border-slate-600/30 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105"
-                  >
-                    <div className={`w-12 h-12 bg-gradient-to-r ${category.color} rounded-xl flex items-center justify-center mb-4`}>
-                      <IconComponent className="w-6 h-6 text-white" />
+                  <div key={index} className="bg-slate-800/60 rounded-2xl p-6 border border-slate-600/30 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${colorClasses[service.color]} rounded-xl flex items-center justify-center mb-4`}>
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <h4 className="text-lg font-bold text-slate-200 mb-3">{category.category}</h4>
-                    <ul className="space-y-2">
-                      {category.skills.map((skill, skillIndex) => (
-                        <li key={skill} className="text-sm text-slate-400 flex items-center gap-2">
-                          <CheckCircle className="w-3 h-3 text-blue-400" />
-                          {skill}
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
+                    <h4 className="text-xl font-bold text-white mb-3">{service.title}</h4>
+                    <p className="text-slate-400 leading-relaxed">{service.description}</p>
+                  </div>
                 );
               })}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Experience & Timeline Section */}
-      <section id="experience" className="relative py-20 px-6 md:px-10 bg-slate-800/50">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold mb-16 text-center bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Experience & Timeline
-          </motion.h2>
-          
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-indigo-600"></div>
-            
-            {/* Timeline Items */}
-            <div className="space-y-12">
-              {/* Experience Item */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="relative flex items-start gap-8"
-              >
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0 border-4 border-slate-800 shadow-xl z-10">
-                  <Briefcase className="w-8 h-8 text-white" />
-                </div>
-                
-                <div className="bg-slate-800/60 rounded-2xl p-8 flex-1 border border-slate-600/30 hover:border-blue-500/50 transition-all duration-300">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-blue-300 mb-2">Operations Manager</h3>
-                      <p className="text-lg text-slate-300 font-medium">Event Managers Club, VIT Chennai</p>
-                      <p className="text-sm text-slate-400 mt-1">2024 - Present</p>
-                    </div>
-                    <div className="text-right">
-                      <Calendar className="w-6 h-6 text-blue-400 mb-2" />
-                      <p className="text-sm text-slate-400">Current Role</p>
-                    </div>
-                  </div>
-                  
-                  <p className="text-slate-300 leading-relaxed mb-6">
-                    Successfully organized and managed 300+ events including major college festivals like TechnoVIT'24 and Vibrance'25. 
-                    Responsible for venue coordination, team operations, and large-scale event logistics management. 
-                    Led cross-functional teams and developed efficient operational processes.
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {['Leadership', 'Event Management', 'Team Coordination', 'Project Planning', 'Operations'].map((skill, index) => (
-                      <span key={skill} className="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm rounded-full border border-blue-500/30">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-              
-              {/* Education Item */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative flex items-start gap-8"
-              >
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-violet-600 rounded-full flex items-center justify-center flex-shrink-0 border-4 border-slate-800 shadow-xl z-10">
-                  <Book className="w-8 h-8 text-white" />
-                </div>
-                
-                <div className="bg-slate-800/60 rounded-2xl p-8 flex-1 border border-slate-600/30 hover:border-purple-500/50 transition-all duration-300">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-purple-300 mb-2">B.Tech CSE (AI & Robotics)</h3>
-                      <p className="text-lg text-slate-300 font-medium">VIT Chennai</p>
-                      <p className="text-sm text-slate-400 mt-1">2023 - 2027</p>
-                    </div>
-                    <div className="text-right">
-                      <TrendingUp className="w-6 h-6 text-purple-400 mb-2" />
-                      <p className="text-sm text-slate-400">CGPA: 8.34</p>
-                    </div>
-                  </div>
-                  
-                  <p className="text-slate-300 leading-relaxed mb-6">
-                    Pursuing advanced coursework in Artificial Intelligence, Machine Learning, Robotics, and Software Engineering. 
-                    Actively involved in research projects and technical clubs. Strong academic performance with focus on practical applications 
-                    of AI/ML technologies.
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {['Artificial Intelligence', 'Machine Learning', 'Robotics', 'Data Structures', 'Software Engineering'].map((subject, index) => (
-                      <span key={subject} className="px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full border border-purple-500/30">
-                        {subject}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-              
-              {/* School Item */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="relative flex items-start gap-8"
-              >
-                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 border-4 border-slate-800 shadow-xl z-10">
-                  <Award className="w-8 h-8 text-white" />
-                </div>
-                
-                <div className="bg-slate-800/60 rounded-2xl p-8 flex-1 border border-slate-600/30 hover:border-green-500/50 transition-all duration-300">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-green-300 mb-2">Senior Secondary Education</h3>
-                      <p className="text-lg text-slate-300 font-medium">Presentation Convent Sr Sec School, Jammu</p>
-                      <p className="text-sm text-slate-400 mt-1">2021 - 2023</p>
-                    </div>
-                    <div className="text-right">
-                      <Star className="w-6 h-6 text-green-400 mb-2" />
-                      <p className="text-sm text-slate-400">90% Grade</p>
-                    </div>
-                  </div>
-                  
-                  <p className="text-slate-300 leading-relaxed mb-6">
-                    Completed higher secondary education with PCM (Physics, Chemistry, Mathematics) and English. 
-                    Achieved excellent academic performance with 90% overall grade. Built strong foundation in mathematical 
-                    and scientific principles essential for engineering studies.
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {['Physics', 'Chemistry', 'Mathematics', 'English', 'Academic Excellence'].map((subject, index) => (
-                      <span key={subject} className="px-3 py-1 bg-green-500/20 text-green-300 text-sm rounded-full border border-green-500/30">
-                        {subject}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
             </div>
           </div>
         </div>
       </section>
       
-      {/* Testimonials Section */}
-      <section id="testimonials" className="relative py-20 px-6 md:px-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold mb-16 text-center bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            What Others Say
-          </motion.h2>
+      {/* Projects Section */}
+      <section id="projects" className="py-20 px-6 lg:px-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">
+              Featured Projects
+            </h2>
+            <p className="text-slate-400 text-lg">A showcase of my technical expertise and problem-solving abilities</p>
+          </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                className="bg-slate-800/60 rounded-2xl p-8 border border-slate-600/30 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105"
-              >
-                <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                    {testimonial.avatar}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Smart Construction Planner */}
+            <div className="group relative bg-gradient-to-br from-slate-800 to-purple-900 rounded-2xl p-8 shadow-xl border border-purple-800/30 hover:border-purple-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/Smart-Construction-Planner', '_blank')}>
+              {/* Background Decoration */}
+              <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
+                <Zap className="w-8 h-8 text-purple-400" />
+              </div>
+              
+              {/* Project Icon */}
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Target className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* Project Content */}
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mb-3 text-purple-300 group-hover:text-purple-200 transition-colors">
+                  Smart Construction Planner
+                </h3>
+                <p className="text-slate-300 leading-relaxed mb-4">
+                  AI-driven tool optimizing construction projects using pedestrian flow analysis 
+                  and geospatial data for intelligent urban planning and resource allocation.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['AI/ML', 'Python', 'Geospatial Data', 'Urban Planning'].map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full border border-purple-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Project Links */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-purple-400 group-hover:text-purple-300 transition-colors" />
+                  <ExternalLink className="w-4 h-4 text-purple-400 group-hover:text-purple-300 transition-colors" />
+                </div>
+                <span className="text-purple-400 text-sm font-medium">View Project</span>
+              </div>
+              
+              <div className="mt-4 text-sm text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                Click to view on GitHub →
+              </div>
+            </div>
+            
+            {/* Project Management System */}
+            <div className="group relative bg-gradient-to-br from-slate-800 to-green-900 rounded-2xl p-8 shadow-xl border border-green-800/30 hover:border-green-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/MERN-Full-Stack', '_blank')}>
+              {/* Background Decoration */}
+              <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
+                <Globe className="w-8 h-8 text-green-400" />
+              </div>
+              
+              {/* Project Icon */}
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Briefcase className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* Project Content */}
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mb-3 text-green-300 group-hover:text-green-200 transition-colors">
+                  Project Management System
+                </h3>
+                <p className="text-slate-300 leading-relaxed mb-4">
+                  Full-stack MERN application with user authentication, real-time updates, 
+                  and collaboration tools for efficient team and project management.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['React', 'Node.js', 'MongoDB', 'Express', 'JWT Auth'].map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full border border-green-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Project Links */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-green-400 group-hover:text-green-300 transition-colors" />
+                  <ExternalLink className="w-4 h-4 text-green-400 group-hover:text-green-300 transition-colors" />
+                </div>
+                <span className="text-green-400 text-sm font-medium">View Project</span>
+              </div>
+              
+              <div className="mt-4 text-sm text-green-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                Click to view on GitHub →
+              </div>
+            </div>
+            
+            {/* Financial Portfolio Tracker */}
+            <div className="group relative bg-gradient-to-br from-slate-800 to-blue-900 rounded-2xl p-8 shadow-xl border border-blue-800/30 hover:border-blue-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/Financial-Portfolio-Tracker', '_blank')}>
+              {/* Background Decoration */}
+              <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
+                <TrendingUp className="w-8 h-8 text-blue-400" />
+              </div>
+              
+              {/* Project Icon */}
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Database className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* Project Content */}
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mb-3 text-blue-300 group-hover:text-blue-200 transition-colors">
+                  Financial Portfolio Tracker
+                </h3>
+                <p className="text-slate-300 leading-relaxed mb-4">
+                  Advanced financial tracking application with real-time market data integration, 
+                  portfolio analytics, and comprehensive investment insights.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['React', 'API Integration', 'Data Analytics', 'FinTech'].map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full border border-blue-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Project Links */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                  <ExternalLink className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                </div>
+                <span className="text-blue-400 text-sm font-medium">View Project</span>
+              </div>
+              
+              <div className="mt-4 text-sm text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                Click to view on GitHub →
+              </div>
+            </div>
+            
+            {/* Data Structures & Algorithms */}
+            <div className="group relative bg-gradient-to-br from-slate-800 to-orange-900 rounded-2xl p-8 shadow-xl border border-orange-800/30 hover:border-orange-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/DSA-Practice', '_blank')}>
+              {/* Background Decoration */}
+              <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
+                <Code className="w-8 h-8 text-orange-400" />
+              </div>
+              
+              {/* Project Icon */}
+              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Zap className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* Project Content */}
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mb-3 text-orange-300 group-hover:text-orange-200 transition-colors">
+                  DSA Problem Solutions
+                </h3>
+                <p className="text-slate-300 leading-relaxed mb-4">
+                  Comprehensive collection of optimized solutions to data structures and 
+                  algorithms problems from LeetCode and competitive programming platforms.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['Java', 'Python', 'Algorithms', 'Problem Solving'].map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full border border-orange-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Project Links */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-orange-400 group-hover:text-orange-300 transition-colors" />
+                  <ExternalLink className="w-4 h-4 text-orange-400 group-hover:text-orange-300 transition-colors" />
+                </div>
+                <span className="text-orange-400 text-sm font-medium">View Solutions</span>
+              </div>
+              
+              <div className="mt-4 text-sm text-orange-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                Click to view on GitHub →
+              </div>
+            </div>
+            
+            {/* Machine Learning Projects */}
+            <div className="group relative bg-gradient-to-br from-slate-800 to-pink-900 rounded-2xl p-8 shadow-xl border border-pink-800/30 hover:border-pink-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/ML-Model-Collection', '_blank')}>
+              {/* Background Decoration */}
+              <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
+                <Rocket className="w-8 h-8 text-pink-400" />
+              </div>
+              
+              {/* Project Icon */}
+              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Target className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* Project Content */}
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mb-3 text-pink-300 group-hover:text-pink-200 transition-colors">
+                  ML Model Collection
+                </h3>
+                <p className="text-slate-300 leading-relaxed mb-4">
+                  Collection of machine learning models and experiments including classification, 
+                  regression, and neural network implementations with real-world datasets.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['Python', 'TensorFlow', 'Scikit-learn', 'Data Science'].map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-pink-500/20 text-pink-300 text-xs rounded-full border border-pink-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Project Links */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-pink-400 group-hover:text-pink-300 transition-colors" />
+                  <ExternalLink className="w-4 h-4 text-pink-400 group-hover:text-pink-300 transition-colors" />
+                </div>
+                <span className="text-pink-400 text-sm font-medium">View Models</span>
+              </div>
+              
+              <div className="mt-4 text-sm text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                Click to view on GitHub →
+              </div>
+            </div>
+            
+            {/* Web Development Portfolio */}
+            <div className="group relative bg-gradient-to-br from-slate-800 to-indigo-900 rounded-2xl p-8 shadow-xl border border-indigo-800/30 hover:border-indigo-500/50 transition-all duration-500 hover:transform hover:scale-105 cursor-pointer"
+                 onClick={() => window.open('https://github.com/AnnieMahajan454/project_management_tool-1', '_blank')}>
+              {/* Background Decoration */}
+              <div className="absolute top-4 right-4 opacity-30 group-hover:opacity-70 transition-opacity">
+                <Globe className="w-8 h-8 text-indigo-400" />
+              </div>
+              
+              {/* Project Icon */}
+              <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Globe className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* Project Content */}
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mb-3 text-indigo-300 group-hover:text-indigo-200 transition-colors">
+                  Web Development Projects
+                </h3>
+                <p className="text-slate-300 leading-relaxed mb-4">
+                  Collection of responsive web applications and frontend projects showcasing 
+                  modern web technologies and user interface design principles.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['HTML/CSS', 'JavaScript', 'React', 'Responsive Design'].map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-indigo-500/20 text-indigo-300 text-xs rounded-full border border-indigo-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Project Links */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
+                  <ExternalLink className="w-4 h-4 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
+                </div>
+                <span className="text-indigo-400 text-sm font-medium">View Projects</span>
+              </div>
+              
+              <div className="mt-4 text-sm text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                Click to view on GitHub →
+              </div>
+            </div>
+          </div>
+          
+          {/* View All Projects Button */}
+          <div className="text-center mt-12">
+            <a 
+              href="https://github.com/AnnieMahajan454" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              <Github className="w-5 h-5" />
+              View All Projects on GitHub
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      {/* Skills Section */}
+      <section id="skills" className="py-20 px-6 lg:px-10 bg-slate-800/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+              Technical Skills
+            </h2>
+            <p className="text-slate-400 text-lg">My expertise across different technologies and programming languages</p>
+          </div>
+          
+          {/* Professional Skills Grid */}
+          <div className="grid lg:grid-cols-3 gap-8">
+            {[
+              {
+                category: "Frontend Development",
+                icon: Globe,
+                skills: [
+                  { name: "React.js", level: "Expert" },
+                  { name: "JavaScript (ES6+)", level: "Advanced" },
+                  { name: "HTML5/CSS3", level: "Expert" },
+                  { name: "Tailwind CSS", level: "Advanced" },
+                  { name: "Responsive Design", level: "Expert" }
+                ],
+                color: "from-blue-500 to-indigo-600",
+                bgColor: "from-blue-900/20 to-indigo-900/20",
+                borderColor: "border-blue-500/30 hover:border-blue-400/50"
+              },
+              {
+                category: "Backend & Database",
+                icon: Server,
+                skills: [
+                  { name: "Node.js", level: "Advanced" },
+                  { name: "Express.js", level: "Advanced" },
+                  { name: "Python Flask", level: "Intermediate" },
+                  { name: "MySQL", level: "Advanced" },
+                  { name: "MongoDB", level: "Intermediate" }
+                ],
+                color: "from-green-500 to-emerald-600",
+                bgColor: "from-green-900/20 to-emerald-900/20",
+                borderColor: "border-green-500/30 hover:border-green-400/50"
+              },
+              {
+                category: "AI/ML & Data Science",
+                icon: Cpu,
+                skills: [
+                  { name: "Machine Learning", level: "Advanced" },
+                  { name: "Data Analysis", level: "Expert" },
+                  { name: "Python (NumPy, Pandas)", level: "Advanced" },
+                  { name: "TensorFlow", level: "Intermediate" },
+                  { name: "Statistical Analysis", level: "Advanced" }
+                ],
+                color: "from-purple-500 to-violet-600",
+                bgColor: "from-purple-900/20 to-violet-900/20",
+                borderColor: "border-purple-500/30 hover:border-purple-400/50"
+              },
+              {
+                category: "Programming Languages",
+                icon: Code,
+                skills: [
+                  { name: "Python", level: "Expert" },
+                  { name: "JavaScript", level: "Expert" },
+                  { name: "Java", level: "Advanced" },
+                  { name: "C/C++", level: "Intermediate" },
+                  { name: "SQL", level: "Advanced" }
+                ],
+                color: "from-orange-500 to-red-600",
+                bgColor: "from-orange-900/20 to-red-900/20",
+                borderColor: "border-orange-500/30 hover:border-orange-400/50"
+              },
+              {
+                category: "Tools & Cloud Technologies",
+                icon: Cloud,
+                skills: [
+                  { name: "Git/GitHub", level: "Expert" },
+                  { name: "AWS", level: "Intermediate" },
+                  { name: "Docker", level: "Intermediate" },
+                  { name: "VS Code", level: "Expert" },
+                  { name: "Postman", level: "Advanced" }
+                ],
+                color: "from-cyan-500 to-blue-600",
+                bgColor: "from-cyan-900/20 to-blue-900/20",
+                borderColor: "border-cyan-500/30 hover:border-cyan-400/50"
+              },
+              {
+                category: "Data Analysis & Visualization",
+                icon: TrendingUp,
+                skills: [
+                  { name: "Statistical Modeling", level: "Advanced" },
+                  { name: "Data Visualization", level: "Expert" },
+                  { name: "Excel/Sheets", level: "Expert" },
+                  { name: "Jupyter Notebooks", level: "Advanced" },
+                  { name: "Research & Analytics", level: "Expert" }
+                ],
+                color: "from-pink-500 to-rose-600",
+                bgColor: "from-pink-900/20 to-rose-900/20",
+                borderColor: "border-pink-500/30 hover:border-pink-400/50"
+              }
+            ].map((category, index) => {
+              const IconComponent = category.icon;
+              return (
+                <div
+                  key={category.category}
+                  className={`bg-gradient-to-br from-slate-800 ${category.bgColor} rounded-3xl p-8 border ${category.borderColor} transition-all duration-500 hover:transform hover:scale-105 group shadow-xl`}
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`w-14 h-14 bg-gradient-to-r ${category.color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      <IconComponent className="w-7 h-7 text-white" />
+                    </div>
+                    <h4 className="text-xl font-bold text-white group-hover:text-slate-100 transition-colors">{category.category}</h4>
                   </div>
-                  <div>
-                    <h4 className="text-lg font-bold text-slate-200">{testimonial.name}</h4>
-                    <p className="text-sm text-slate-400">{testimonial.role}</p>
+                  
+                  <div className="space-y-4">
+                    {category.skills.map((skill, skillIndex) => {
+                      const levelColors = {
+                        "Expert": "bg-green-500/20 text-green-300 border-green-500/40",
+                        "Advanced": "bg-blue-500/20 text-blue-300 border-blue-500/40",
+                        "Intermediate": "bg-yellow-500/20 text-yellow-300 border-yellow-500/40"
+                      };
+                      
+                      return (
+                        <div key={skillIndex} className="flex items-center justify-between group-hover:transform group-hover:translate-x-1 transition-transform duration-300">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-slate-400 rounded-full group-hover:bg-slate-300 transition-colors"></div>
+                            <span className="text-slate-300 group-hover:text-slate-200 transition-colors font-medium">{skill.name}</span>
+                          </div>
+                          <span className={`px-3 py-1 text-xs rounded-full border ${levelColors[skill.level]} font-semibold`}>
+                            {skill.level}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
+              );
+            })}
+          </div>
+          
+          {/* Additional Skills & Interests */}
+          <div className="mt-20">
+            <h3 className="text-3xl font-bold text-center mb-12 text-white">Additional Skills & Interests</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-white mb-3">Leadership</h4>
+                <p className="text-slate-400">Event management, team coordination, and operations management with 300+ events organized</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-violet-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-white mb-3">Problem Solving</h4>
+                <p className="text-slate-400">Competitive programming, algorithm optimization, and complex system design</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Rocket className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-white mb-3">Innovation</h4>
+                <p className="text-slate-400">Research in AI/Robotics, creative solution development, and technology exploration</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Programming Languages */}
+          <div className="mt-16 text-center">
+            <h3 className="text-2xl font-bold text-white mb-8">Programming Languages</h3>
+            <div className="flex flex-wrap justify-center gap-3">
+              {[
+                { name: 'Python', level: 'Advanced', color: 'green' },
+                { name: 'JavaScript', level: 'Advanced', color: 'yellow' },
+                { name: 'Java', level: 'Intermediate', color: 'orange' },
+                { name: 'C/C++', level: 'Intermediate', color: 'blue' },
+                { name: 'SQL', level: 'Intermediate', color: 'purple' },
+                { name: 'HTML/CSS', level: 'Advanced', color: 'red' }
+              ].map((lang) => {
+                const colorClasses = {
+                  green: 'bg-green-500/20 text-green-300 border-green-500/30',
+                  yellow: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+                  orange: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
+                  blue: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+                  purple: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+                  red: 'bg-red-500/20 text-red-300 border-red-500/30'
+                };
                 
-                <div className="mb-4">
-                  <div className="flex text-yellow-400 mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
+                return (
+                  <span
+                    key={lang.name}
+                    className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 hover:scale-105 cursor-default ${colorClasses[lang.color]}`}
+                  >
+                    {lang.name} <span className="text-xs opacity-75">({lang.level})</span>
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Experience & Timeline Section */}
+      <section id="experience" className="py-20 px-6 lg:px-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+              Experience & Journey
+            </h2>
+            <p className="text-slate-400 text-lg">My professional and academic timeline</p>
+          </div>
+          
+          <div className="relative">
+            {/* Animated Timeline Line */}
+            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-purple-500 to-indigo-600 rounded-full shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-b from-blue-400 to-purple-400 rounded-full animate-pulse opacity-70"></div>
+            </div>
+            
+            {/* Timeline Items */}
+            <div className="space-y-16">
+              {/* Current Experience */}
+              <div className="relative flex items-start gap-8 group">
+                {/* Timeline Node */}
+                <div className="relative z-10 flex-shrink-0">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center border-4 border-slate-800 shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                    <Briefcase className="w-8 h-8 text-white" />
+                  </div>
+                  {/* Pulse animation */}
+                  <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-20"></div>
+                </div>
+                
+                {/* Content Card */}
+                <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-8 flex-1 shadow-2xl border border-slate-600/30 hover:border-blue-500/50 transition-all duration-500 hover:transform hover:scale-105 group">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <h3 className="text-2xl font-bold text-blue-300 mb-2 group-hover:text-blue-200 transition-colors">
+                        Operations Manager
+                      </h3>
+                      <div className="flex items-center gap-2 text-lg text-slate-300 font-medium mb-2">
+                        <Building className="w-5 h-5 text-blue-400" />
+                        Event Managers Club, VIT Chennai
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-slate-400">
+                        <Calendar className="w-4 h-4" />
+                        2024 - 2025
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+                        <Users className="w-6 h-6 text-blue-400" />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Description */}
+                  <p className="text-slate-300 leading-relaxed mb-6">
+                    Successfully organized and managed 300+ events including major college festivals like 
+                    <span className="text-blue-400 font-semibold"> TechnoVIT'24 </span> and 
+                    <span className="text-blue-400 font-semibold"> Vibrance'25</span>. 
+                    Responsible for venue coordination, team operations, and large-scale event logistics management. 
+                    Led cross-functional teams and developed efficient operational processes.
+                  </p>
+                  
+                  {/* Key Achievements */}
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-slate-200 mb-3">Key Achievements:</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-3 text-slate-300">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        Managed 300+ events with zero major incidents
+                      </li>
+                      <li className="flex items-start gap-3 text-slate-300">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        Led teams of 50+ volunteers per major event
+                      </li>
+                      <li className="flex items-start gap-3 text-slate-300">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        Streamlined operations reducing setup time by 40%
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  {/* Skills Used */}
+                  <div className="flex flex-wrap gap-2">
+                    {['Leadership', 'Event Management', 'Team Coordination', 'Project Planning', 'Operations', 'Logistics'].map((skill) => (
+                      <span key={skill} className="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm rounded-full border border-blue-500/30 hover:bg-blue-500/30 transition-colors">
+                        {skill}
+                      </span>
                     ))}
                   </div>
-                  <p className="text-slate-300 italic leading-relaxed">
-                    "{testimonial.content}"
-                  </p>
                 </div>
-                
-                <div className="flex items-center text-blue-400">
-                  <Users className="w-4 h-4 mr-2" />
-                  <span className="text-sm">Verified Review</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Certificates */}
-      <section id="certificates" className="p-16 max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent flex items-center justify-center gap-3">
-          <Award className="w-8 h-8 text-purple-600" />
-          Certificates & Achievements
-        </h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className={`rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-green-900" : "bg-gradient-to-br from-white to-green-50"} shadow-xl border ${darkMode ? "border-green-800" : "border-green-200"} transform hover:scale-105 transition-all duration-300`}>
-            <div className="flex items-start gap-4">
-              <Award className="w-8 h-8 text-green-500 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="text-xl font-bold text-green-700 dark:text-green-300 mb-2">Full Stack Web Development</h3>
-                <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} mb-1`}>Ethnus</p>
-                <span className="text-sm text-green-600 dark:text-green-400 font-medium">2025</span>
               </div>
-            </div>
-          </div>
-          
-          <div className={`rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-blue-900" : "bg-gradient-to-br from-white to-blue-50"} shadow-xl border ${darkMode ? "border-blue-800" : "border-blue-200"} transform hover:scale-105 transition-all duration-300`}>
-            <div className="flex items-start gap-4">
-              <Award className="w-8 h-8 text-blue-500 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="text-xl font-bold text-blue-700 dark:text-blue-300 mb-2">Python, C & C++</h3>
-                <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} mb-1`}>IIT Bombay</p>
-                <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">2024</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className={`rounded-3xl p-8 ${darkMode ? "bg-gradient-to-br from-gray-800 to-purple-900" : "bg-gradient-to-br from-white to-purple-50"} shadow-xl border ${darkMode ? "border-purple-800" : "border-purple-200"} transform hover:scale-105 transition-all duration-300`}>
-            <div className="flex items-start gap-4">
-              <Award className="w-8 h-8 text-purple-500 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="text-xl font-bold text-purple-700 dark:text-purple-300 mb-2">Core Committee Certificate</h3>
-                <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} mb-1`}>Event Managers Club</p>
-                <span className="text-sm text-purple-600 dark:text-purple-400 font-medium">2024–2025</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="relative p-16 max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent flex items-center justify-center gap-3">
-          <Send className="w-8 h-8 text-purple-600" />
-          Let's Connect!
-        </h2>
-        
-        <div className={`relative rounded-3xl p-12 ${darkMode ? "bg-gradient-to-br from-gray-800 via-purple-900 to-indigo-900" : "bg-gradient-to-br from-white via-purple-50 to-indigo-50"} shadow-2xl border ${darkMode ? "border-purple-800" : "border-purple-200"} overflow-hidden`}>
-          {/* Background Pattern */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-400/10 to-indigo-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-pink-400/10 to-purple-400/10 rounded-full blur-2xl"></div>
-          
-          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-3xl font-bold mb-6 text-purple-700 dark:text-purple-300">
-                Ready to create something amazing together?
-              </h3>
-              <p className={`text-lg leading-relaxed mb-8 ${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-                I'm always excited to discuss new opportunities, innovative projects, or just have a chat about technology and creativity. Let's connect and explore how we can collaborate!
-              </p>
               
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-white" />
+              {/* Education - Current */}
+              <div className="relative flex items-start gap-8 group">
+                {/* Timeline Node */}
+                <div className="relative z-10 flex-shrink-0">
+                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-violet-600 rounded-full flex items-center justify-center border-4 border-slate-800 shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                    <GraduationCap className="w-8 h-8 text-white" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-lg">Email</h4>
-                    <a href="mailto:mahajanannie411@gmail.com" className="text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300 transition-colors">
-                      mahajanannie411@gmail.com
-                    </a>
+                  <div className="absolute inset-0 bg-purple-500 rounded-full animate-ping opacity-20"></div>
+                </div>
+                
+                {/* Content Card */}
+                <div className="bg-gradient-to-br from-slate-800 to-purple-900/20 rounded-2xl p-8 flex-1 shadow-2xl border border-slate-600/30 hover:border-purple-500/50 transition-all duration-500 hover:transform hover:scale-105 group">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <h3 className="text-2xl font-bold text-purple-300 mb-2 group-hover:text-purple-200 transition-colors">
+                        B.Tech Computer Science Engineering
+                      </h3>
+                      <div className="text-lg text-slate-300 font-medium mb-1">
+                        Specialization: Artificial Intelligence & Robotics
+                      </div>
+                      <div className="flex items-center gap-2 text-lg text-slate-300 font-medium mb-2">
+                        <Building className="w-5 h-5 text-purple-400" />
+                        VIT Chennai
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-slate-400">
+                        <Calendar className="w-4 h-4" />
+                        2023 - 2027
+                        <span className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-medium ml-2">
+                          In Progress
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-purple-400 mb-1">8.34</div>
+                      <div className="text-sm text-slate-400">CGPA</div>
+                    </div>
+                  </div>
+                  
+                  {/* Description */}
+                  <p className="text-slate-300 leading-relaxed mb-6">
+                    Pursuing advanced coursework in Artificial Intelligence, Machine Learning, Robotics, and Software Engineering. 
+                    Actively involved in research projects and technical clubs. Strong academic performance with focus on practical 
+                    applications of AI/ML technologies and cutting-edge robotics research.
+                  </p>
+                  
+                  {/* Key Subjects */}
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-slate-200 mb-3">Key Subjects:</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[
+                        'Artificial Intelligence',
+                        'Machine Learning', 
+                        'Robotics Engineering',
+                        'Data Structures & Algorithms',
+                        'Software Engineering',
+                        'Computer Vision',
+                        'Natural Language Processing',
+                        'Database Management'
+                      ].map((subject) => (
+                        <div key={subject} className="flex items-center gap-2 text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                          <span className="text-sm">{subject}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Academic Focus */}
+                  <div className="flex flex-wrap gap-2">
+                    {['AI Research', 'Robotics', 'Machine Learning', 'Software Development', 'Data Science', 'Computer Vision'].map((area) => (
+                      <span key={area} className="px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full border border-purple-500/30 hover:bg-purple-500/30 transition-colors">
+                        {area}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* School Education */}
+              <div className="relative flex items-start gap-8 group">
+                {/* Timeline Node */}
+                <div className="relative z-10 flex-shrink-0">
+                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center border-4 border-slate-800 shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                    <Award className="w-8 h-8 text-white" />
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-white" />
+                {/* Content Card */}
+                <div className="bg-gradient-to-br from-slate-800 to-green-900/20 rounded-2xl p-8 flex-1 shadow-2xl border border-slate-600/30 hover:border-green-500/50 transition-all duration-500 hover:transform hover:scale-105 group">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <h3 className="text-2xl font-bold text-green-300 mb-2 group-hover:text-green-200 transition-colors">
+                        Senior Secondary Education
+                      </h3>
+                      <div className="text-lg text-slate-300 font-medium mb-1">
+                        Stream: PCM with English
+                      </div>
+                      <div className="flex items-center gap-2 text-lg text-slate-300 font-medium mb-2">
+                        <Building className="w-5 h-5 text-green-400" />
+                        Presentation Convent Sr Sec School, Jammu
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-slate-400">
+                        <Calendar className="w-4 h-4" />
+                        2021 - 2023
+                        <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded-full text-xs font-medium ml-2">
+                          Completed
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-green-400 mb-1">90%</div>
+                      <div className="text-sm text-slate-400">Grade</div>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-lg">Let's Talk</h4>
-                    <p className={`${darkMode ? "text-gray-300" : "text-gray-600"}`}>Available for calls and meetings</p>
+                  
+                  {/* Description */}
+                  <p className="text-slate-300 leading-relaxed mb-6">
+                    Completed higher secondary education with excellent performance in Physics, Chemistry, Mathematics, and English. 
+                    Achieved 90% overall grade while building a strong foundation in mathematical and scientific principles 
+                    essential for engineering studies. Active participation in science fairs and academic competitions.
+                  </p>
+                  
+                  {/* Achievements */}
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-slate-200 mb-3">Key Achievements:</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-3 text-slate-300">
+                        <Star className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        90% overall grade in PCM stream
+                      </li>
+                      <li className="flex items-start gap-3 text-slate-300">
+                        <Star className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        Consistent academic excellence throughout
+                      </li>
+                      <li className="flex items-start gap-3 text-slate-300">
+                        <Star className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        Strong foundation in STEM subjects
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  {/* Subjects */}
+                  <div className="flex flex-wrap gap-2">
+                    {['Physics', 'Chemistry', 'Mathematics', 'English', 'Academic Excellence', 'STEM Foundation'].map((subject) => (
+                      <span key={subject} className="px-3 py-1 bg-green-500/20 text-green-300 text-sm rounded-full border border-green-500/30 hover:bg-green-500/30 transition-colors">
+                        {subject}
+                      </span>
+                    ))}
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Certifications Preview */}
+          <div className="mt-20 text-center">
+            <h3 className="text-3xl font-bold text-white mb-8">Professional Certifications</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  title: "Generative AI Professional",
+                  issuer: "Oracle",
+                  year: "2025",
+                  color: "red",
+                  icon: Target,
+                  link: "https://drive.google.com/file/d/1H8TWX2wGFABpOQGie9E-AqIcd7WKJ6ec/view?usp=drive_link"
+                },
+      {
+                  title: "Data Science Professional",
+                  issuer: "Oracle",
+                  year: "2025",
+                  color: "purple",
+                  icon: Target,
+                  link: "https://drive.google.com/file/d/1HA0RcQCRGMXTq9y_VgrRPk8Ytphs8cs6/view?usp=drive_link"
+                },
+                {
+                  title: "MERN Full-Stack Web Development",
+                  issuer: "Ethnus",
+                  year: "2025",
+                  color: "green",
+                  icon: Globe,
+                  link: "https://drive.google.com/file/d/1kZhoUNmELaHkMxP8cYPdo4i6aF-SkZst/view?usp=drive_link"
+                },
+                {
+                  title: "Advanced Excel Certification",
+                  issuer: "Internshala",
+                  year: "2025",
+                  color: "emerald",
+                  icon: TrendingUp,
+                  link: "https://drive.google.com/file/d/18LuptPOi3HUN6VbvbLvw875ialGugMu6/view?usp=drive_link"
+                },
+                {
+                  title: "Python, C & C++",
+                  issuer: "IIT Bombay",
+                  year: "2024",
+                  color: "blue", 
+                  icon: Code,
+                  link: "https://drive.google.com/drive/folders/1CxY-t3rbV6JFT_7oEsfFJzLmHia6kHm_?usp=drive_link"
+                }
+              ].map((cert, index) => {
+                const Icon = cert.icon;
+                const colorClasses = {
+                  green: 'from-green-500 to-emerald-600 border-green-500/30 hover:border-green-400/50',
+                  blue: 'from-blue-500 to-indigo-600 border-blue-500/30 hover:border-blue-400/50',
+                  purple: 'from-purple-500 to-violet-600 border-purple-500/30 hover:border-purple-400/50',
+                  red: 'from-red-500 to-orange-600 border-red-500/30 hover:border-red-400/50',
+                  emerald: 'from-emerald-500 to-teal-600 border-emerald-500/30 hover:border-emerald-400/50'
+                };
                 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-white" />
+                return (
+                  <a 
+                    key={index} 
+                    href={cert.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`bg-slate-800/60 rounded-2xl p-6 border ${colorClasses[cert.color]} transition-all duration-300 hover:transform hover:scale-105 group cursor-pointer block`}
+                  >
+                    <div className={`w-12 h-12 bg-gradient-to-r ${colorClasses[cert.color].split(' ')[0]} ${colorClasses[cert.color].split(' ')[1]} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h4 className="text-lg font-bold text-white mb-2">{cert.title}</h4>
+                    <p className="text-slate-300 mb-1">{cert.issuer}</p>
+                    <p className="text-slate-400 text-sm mb-2">{cert.year}</p>
+                    <div className="flex items-center justify-center gap-1 text-xs text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ExternalLink className="w-3 h-3" />
+                      <span>View Certificate</span>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Contact Section */}
+      <section id="contact" className="py-20 px-6 lg:px-10 bg-slate-800/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              Get In Touch
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              Let's collaborate on your next project! I'm always open to discussing new opportunities, 
+              innovative ideas, and how we can work together to bring your vision to life.
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center justify-center gap-3">
+                <MessageSquare className="w-6 h-6 text-cyan-400" />
+                Let's Connect
+              </h3>
+              <p className="text-slate-300 leading-relaxed mb-8 max-w-2xl mx-auto">
+                I'm currently seeking opportunities in full-stack development, AI/ML engineering, 
+                and innovative tech projects. Whether you're looking for a dedicated team member, 
+                a project collaborator, or someone to bring fresh ideas to your organization, 
+                I'd love to hear from you!
+              </p>
+            </div>
+            
+            {/* Contact Cards */}
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              {/* Email */}
+              <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/30 hover:border-cyan-500/50 transition-all duration-300 group">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <Mail className="w-8 h-8 text-white" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-lg">Location</h4>
-                    <p className={`${darkMode ? "text-gray-300" : "text-gray-600"}`}>Chennai, India</p>
+                  <h4 className="text-lg font-bold text-white mb-2">Email Address</h4>
+                  <a 
+                    href="mailto:mahajanannie411@gmail.com" 
+                    className="text-cyan-400 hover:text-cyan-300 transition-colors text-sm block mb-2"
+                  >
+                    mahajanannie411@gmail.com
+                  </a>
+                  <p className="text-slate-400 text-sm">Feel free to reach out for any inquiries</p>
+                </div>
+              </div>
+              
+              {/* Location */}
+              <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/30 hover:border-green-500/50 transition-all duration-300 group">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <MapPin className="w-8 h-8 text-white" />
                   </div>
+                  <h4 className="text-lg font-bold text-white mb-2">Location</h4>
+                  <p className="text-green-400 mb-2">Chennai, Tamil Nadu, India</p>
+                  <p className="text-slate-400 text-sm">Open to remote work and relocation</p>
+                </div>
+              </div>
+              
+              {/* Availability */}
+              <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/30 hover:border-purple-500/50 transition-all duration-300 group">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-violet-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <Calendar className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="text-lg font-bold text-white mb-2">Availability</h4>
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <p className="text-purple-400">Available for Projects</p>
+                  </div>
+                  <p className="text-slate-400 text-sm">Quick response within 24 hours</p>
                 </div>
               </div>
             </div>
             
-            <div className="flex flex-col items-center">
-              <div className="w-64 h-64 relative mb-8">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full animate-pulse opacity-20"></div>
-                <div className="absolute inset-4 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
-                  <div className="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <MessageSquare className="w-16 h-16 text-white animate-pulse" />
-                  </div>
-                </div>
+            {/* Social Links */}
+            <div className="text-center">
+              <h4 className="text-xl font-bold text-white mb-6">Connect on Social Media</h4>
+              <div className="flex justify-center gap-6">
+                {[
+                  {
+                    href: "https://linkedin.com/in/annie-mahajan-1v7i0v4u",
+                    icon: Linkedin,
+                    label: "LinkedIn",
+                    color: "from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600",
+                    description: "Professional Network"
+                  },
+                  {
+                    href: "https://github.com/AnnieMahajan454",
+                    icon: Github,
+                    label: "GitHub",
+                    color: "from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700",
+                    description: "Code Repository"
+                  },
+                  {
+                    href: "https://leetcode.com/u/AnnieMahajan/",
+                    icon: Code,
+                    label: "LeetCode",
+                    color: "from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500",
+                    description: "Coding Practice"
+                  },
+                  {
+                    href: "mailto:mahajanannie411@gmail.com",
+                    icon: Mail,
+                    label: "Email",
+                    color: "from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500",
+                    description: "Direct Contact"
+                  }
+                ].map((social, index) => {
+                  const Icon = social.icon;
+                  return (
+                    <div key={social.label} className="group relative">
+                      <a
+                        href={social.href}
+                        target={social.href.startsWith('http') ? '_blank' : undefined}
+                        rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className={`w-16 h-16 bg-gradient-to-r ${social.color} rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 group`}
+                      >
+                        <Icon className="w-7 h-7 text-white" />
+                      </a>
+                      <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-3 py-2 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-600">
+                        <div className="text-center">
+                          <div className="font-medium">{social.label}</div>
+                          <div className="text-slate-400">{social.description}</div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              
-              <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
-                <a href="https://github.com/AnnieMahajan454" className="group flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white rounded-2xl transition-all duration-300 hover:scale-105">
-                  <Github className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                  <span className="font-medium">GitHub</span>
+            </div>
+          </div>
+          
+          {/* Call to Action */}
+          <div className="mt-20 text-center">
+            <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-3xl p-8 max-w-4xl mx-auto">
+              <h3 className="text-3xl font-bold text-white mb-4">Ready to Start Something Amazing?</h3>
+              <p className="text-slate-300 text-lg mb-6 max-w-2xl mx-auto">
+                I'm passionate about creating innovative solutions and collaborating with talented teams. 
+                Let's discuss how we can bring your ideas to life!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="mailto:mahajanannie411@gmail.com"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  <Mail className="w-5 h-5" />
+                  Email Me Directly
                 </a>
-                
-                <a href="https://www.linkedin.com/in/annie-mahajan-1v7i0v4u" className="group flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white rounded-2xl transition-all duration-300 hover:scale-105">
-                  <Linkedin className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                  <span className="font-medium">LinkedIn</span>
-                </a>
-                
-                <a href="https://leetcode.com/u/AnnieMahajan/" className="group flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400 text-white rounded-2xl transition-all duration-300 hover:scale-105">
-                  <Code className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                  <span className="font-medium">LeetCode</span>
-                </a>
-                
-                <a href="mailto:mahajanannie411@gmail.com" className="group flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white rounded-2xl transition-all duration-300 hover:scale-105">
-                  <Mail className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                  <span className="font-medium">Email</span>
+                <a
+                  href="https://linkedin.com/in/annie-mahajan-1v7i0v4u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-600/30 hover:border-cyan-500/50 text-slate-200 font-semibold rounded-xl transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                >
+                  <Linkedin className="w-5 h-5" />
+                  Connect on LinkedIn
                 </a>
               </div>
             </div>
           </div>
         </div>
       </section>
-
+      
       {/* Footer */}
-      <footer className={`p-6 text-center ${darkMode ? "bg-gray-800" : "bg-gray-200"}`}>
-        <p>© 2025 Annie Mahajan. All rights reserved.</p>
+      <footer className="bg-slate-800 py-6 text-center">
+        <p className="text-slate-400">© 2025 Annie Mahajan. All rights reserved.</p>
       </footer>
     </div>
   );
